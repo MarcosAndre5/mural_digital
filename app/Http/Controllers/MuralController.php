@@ -2,58 +2,47 @@
 
 namespace App\Http\Controllers;
 
+use App\Mural;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
 
 class MuralController extends Controller {
-    public function index() {
-        return view('mural.index');
-    }
+    public function index() { return view('mural.index'); }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create() {
-        return view('mural.create');
+        $mural = Mural::findOrFail(1);
+
+        return view('mural.create', compact('mural'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request) {
-        dd($request->all());
-        if(Input::hasFile('informativo')){
-			$imagem = Input::file('informativo');
-			$imagem->move(public_path('img/'), $imagem->getClientOriginalName());
-			$mural->informativo = $imagem->getClientOriginalName();
+        $mural = Mural::findOrFail(1);
+        
+        $mural->link = $request->get('link');
+        $mural->informativo = $request->get('informativo');
+
+        if($request->hasFile('video')) {
+            unlink(public_path('img/video/'.$mural->video));
+			$imagem = Input::file('video');
+            $imagem->move(public_path('img/video/'), $imagem->getClientOriginalName());
+            $mural->video = $imagem->getClientOriginalName();
 		}
 
-        if(Input::hasFile('informativo2')){
-			$imagem = Input::file('informativo2');
-			$imagem->move(public_path('img/'), $imagem->getClientOriginalName());
-			$mural->informativo = $imagem->getClientOriginalName();
-		}
+        $mural->update();
 
-        if(Input::hasFile('aniversariantes')){
-			$imagem = Input::file('aniversariantes');
-			$imagem->move(public_path('img/'), $imagem->getClientOriginalName());
-			$mural->informativo = $imagem->getClientOriginalName();
-		}
+        return Redirect::back()->with('message', 'Mural Atualizado com Sucesso!');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show() {
-        return view('mural.show');
+        $mural = Mural::findOrFail(1);
+
+        if($mural->link != '') {
+            $link = $mural->link;
+            preg_match('/list=([^\&]+)/', $link, $id_link);
+            $mural->link = $id_link[1];
+        }
+        return view('mural.show', compact('mural'));
     }
 
     /**
@@ -89,4 +78,6 @@ class MuralController extends Controller {
     {
         //
     }
+
+    public function reportar() { return view('reporte'); }
 }

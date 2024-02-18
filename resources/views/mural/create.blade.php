@@ -3,17 +3,6 @@
 @section('title', 'MURAL > Atualizar Mural')
 
 @section('conteudo')
-	<script>
-		document.addEventListener('DOMContentLoaded', function () {
-			var textarea = document.getElementById('informativo');
-			var contador = document.getElementById('contador-caracteres');
-
-			textarea.addEventListener('input', function () {
-				var comprimento = textarea.value.length;
-				contador.textContent = comprimento + ' / 300 Caracteres';
-			});
-		});
-	</script>
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			<h3>Atualizar Mural</h3>
@@ -42,23 +31,48 @@
 	{!! Form::open(array('url'=>'mural', 'method'=>'POST', 'autocomplete'=>'off', 'files'=>'true')) !!}
 		{{ Form::token() }}
 		<div class="row">
-			<div class="col-lg-6 col-sm-6 col-xs-12">
+			<div class="col-lg-5 col-sm-5 col-xs-12">
 				<div class="form-group">
-					<label for="nome">Link Vídeo do Youtube (Playlist dentro do Canal)</label>
-					<input type="text" name="link" value="{{ $mural->link }}" class="form-control" placeholder="https://www.youtube.com/watch?...">
+					<label>Link Vídeo do Youtube (Playlist dentro do Canal)</label>
+					<input type="text" name="link" value="{{ $mural->link }}" class="form-control" placeholder="https://www.youtube.com/watch?..." required>
 				</div>
 			</div>
-			<div class="col-lg-6 col-sm-6 col-xs-12">
+			<div class="col-lg-4 col-sm-4 col-xs-12">
 				<div class="form-group">
-					<label>Upload de Vídeo / Vídeo Atual:</label> {{ $mural->video }}
+					<label>Enviar um Vídeo / Vídeo Atual:</label> {{ $mural->video }}
 					<input type="file" name="video" class="form-control" accept="video/*">
+				</div>
+			</div>
+			<div class="col-lg-3 col-sm-3 col-xs-12">
+				<div class="form-group">
+					<label>Qual vídeo será renderizado:</label>
+					<br>
+					<input type="radio" name="rederizar_vidio" value="link" required 
+					{{ $mural->renderizar == 'link' ? 'checked' : '' }}> Playlist Youtube
+					<br>
+					<input type="radio" name="rederizar_vidio" value="video" required
+					{{ $mural->renderizar == 'video' ? 'checked' : '' }}> Vídeo Enviado
 				</div>
 			</div>
 			<div class="col-lg-12 col-sm-12 col-xs-12">
 				<div class="form-group">
-					<label>Informativo</label>
-					<textarea class="form-control" id="informativo" name="informativo" maxlength="300" rows="3">{{ $mural->informativo }}</textarea>
-					<div id="contador-caracteres">0 / 300 Caracteres</div>
+					<label>Informativo 1</label>
+					<textarea class="form-control" id="informativo1" name="informativo1" maxlength="300" rows="2" required>{{ $mural->informativo1 }}</textarea>
+					<div id="contador-caracteres1">0 / 300 Caracteres</div>
+				</div>
+			</div>
+			<div class="col-lg-12 col-sm-12 col-xs-12">
+				<div class="form-group">
+					<label>Informativo 2</label>
+					<textarea class="form-control" id="informativo2" name="informativo2" maxlength="300" rows="2" required>{{ $mural->informativo2 }}</textarea>
+					<div id="contador-caracteres2">0 / 300 Caracteres</div>
+				</div>
+			</div>
+			<div class="col-lg-12 col-sm-12 col-xs-12">
+				<div class="form-group">
+					<label>Informativo 3</label>
+					<textarea class="form-control" id="informativo3" name="informativo3" maxlength="300" rows="2" required>{{ $mural->informativo3 }}</textarea>
+					<div id="contador-caracteres3">0 / 300 Caracteres</div>
 				</div>
 			</div>
 		</div>

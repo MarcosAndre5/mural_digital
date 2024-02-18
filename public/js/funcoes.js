@@ -1,3 +1,9 @@
+var player;
+
+function onPlayerReady(event) { event.target.playVideo(); }
+
+function onPlayerStateChange(event) { if(event.data == YT.PlayerState.ENDED) player.playVideoAt(0); }
+
 function updateTime() {
     const timeElement = document.getElementById('time');
     const now = new Date();
@@ -9,4 +15,5 @@ function updateTime() {
 }
 
 setInterval(updateTime, 1000); // Atualiza a cada segundo
+
 updateTime(); // Chama a função para exibir o tempo atual imediatamente
